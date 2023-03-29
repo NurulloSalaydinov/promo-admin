@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Categories | Promo Admin</title>
+<style>
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Promo</h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li class="active">Promo</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="white-box">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;">
+                <h1>Promokodlar Jami {{ count }}</h1>
+                <form class="form-group" style="display:flex;gap:20px;flex-wrap:wrap;align-items:center;">
+                    <label for="start">
+                        <h4>Boshlanish sanasi</h5>
+                        <input type="date" id="start" name="start" placeholder="Sana" class="form-control">
+                    </label>
+                    <label for="end">
+                        <h4>Tugash sanasi</h4>
+                        <input type="date" id="end" name="end" placeholder="Sana" class="form-control">
+                    </label>
+                    <button class="btn btn-lg btn-primary fa fa-search"></button>
+                </form>
+                <form method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-lg btn-danger">Promokodlarni o'chirish</button>
+                </form>
+            </div>
+            <div style="overflow: auto;width:100%">           
+                <table class="table h4" style="min-width: 950px">
+                    <thead>
+                        <tr>                        
+                            <th>#ID</th>
+                            <th>Kategoriya</th>
+                            <th>Bal</th>
+                            <th>Code</th>
+                            <th>Sana</th>
+                            <th>Ishlatildimi ?</th>
+                            <th>
+                                <center>
+                                    Harakatlar
+                                </center>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for promo in promos %}
+                        <tr>
+                            <td>{{ promo.id }}</td>
+                            <td>{{ promo.category.title }}</td>
+                            <td>{{ promo.category.points }}</td>
+                            <td>{{ promo.promocode }}</td>
+                            <td>{{ promo.created_at|date:"Y,m,d"     }}</td>
+                            <td>
+                                {% if promo.has_used %}
+                                <span class="btn btn-success">Ishlatilgan</span>
+                                {% else %}
+                                <span class="btn btn-danger">Ishlatilmagan</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <center>
+                                    <a href="{% url 'dashboard:promo_delete_form' promo.id %}" class="btn btn-danger fa fa-times"></a>
+                                </center>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

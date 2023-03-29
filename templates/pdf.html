@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        body {
+            margin: 3px 3px 0 3px
+        }
+
+        * {
+            font-family: sans-serif
+        }
+
+        @page {
+            size: a4 portrait;
+
+            @frame header_frame {
+                /* Static Frame */
+                -pdf-frame-content: header_content;
+                left: 50pt;
+                width: 512pt;
+                top: 50pt;
+                height: 40pt;
+            }
+
+            @frame content_frame {
+                /* Content Frame */
+                left: 50pt;
+                width: 512pt;
+                top: 90pt;
+                height: 632pt;
+            }
+
+            @frame footer_frame {
+                /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 50pt;
+                width: 512pt;
+                top: 772pt;
+                height: 20pt;
+            }
+        }
+        .card {
+            width:350px;height:370px;overflow:hidden;background-color:#0c27a5;padding:0 20px;border-radius:10px
+        }
+        .title-1 {
+            color:white;margin-top:25px;margin-bottom:0;letter-spacing:10px;font-size:37px
+        }
+        .title-2 {
+            color:orange;margin-top:10px;margin-bottom:0;letter-spacing:10px;font-size:37px
+        }
+        .p-1 {
+            color:white;font-size:20px;margin:5px 0 0 10px;
+        }
+        .code {
+            width: 80%;height:40px;background-color:grey;margin-top:15px;text-align:center;color:white;display:flex;align-items:center;justify-content:center;font-size:25px;border-radius:5px
+        }
+        .phone {
+            background-color:green;color:white;width:90%;display:flex;align-items:center;justify-content:center;height:40px;font-size:22px;border-radius:100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display:flex;flex-wrap:wrap;gap:3px;margin:0">
+        {% for code in codes %}
+        <div class="card">
+            <center>
+                <h1 class="title-1">AKSIYA</h1>
+                <h1 class="title-2">BINOKOR</h1>
+            </center>
+            <p class="p-1">Pastda turgan maxsus kodni @binokor_uz_bot ga
+                telegram orqalik yuboring va bal to'plash orqali qimmatbaho sovg'alarga ega bo'ling !</p>
+            <center>
+                <div class="code">
+                    {{ code }}</div>
+                <br>
+                <div
+                    class="phone">
+                    +998 88 833 0116</div>
+            </center>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            print()
+        })
+    </script>
+</body>
+
+</html>

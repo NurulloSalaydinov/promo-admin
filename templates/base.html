@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
+    {% block title %}{% endblock %}
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Menu CSS -->
+    <link href="{% static 'plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css' %}" rel="stylesheet">
+    <!-- animation CSS -->
+    <link href="{% static 'css/animate.css' %}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <!-- color CSS -->
+    <style>
+        .logo {
+            font-size: 35px !important
+        }
+        @media screen and (max-width: 768px) {
+            .logo {
+                font-size: 20px !important;
+            }
+            .top-left-part {
+                width: 100px
+            }
+        }
+        .showme {
+            left: 0 !important;
+            width: 240px !important;
+        }
+        .burger {
+            display: none;
+        }
+        @media screen and (max-width:1170px) {
+            .burger {
+                display: block;
+            }
+        }
+    </style>
+    <link href="{% static 'css/colors/default.css' %}" id="theme" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body class="fix-header">
+    <!-- ============================================================== -->
+    <!-- Preloader -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+        </svg>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Wrapper -->
+    <!-- ============================================================== -->
+    <div id="wrapper">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <nav class="navbar navbar-default navbar-static-top m-b-0">
+            <div class="navbar-header">
+                <div class="top-left-part">
+                    <!-- Logo -->
+                    <a class="logo" href="/">
+                        Binokor
+                    </a>
+                </div>
+                <!-- /Logo -->
+                <ul class="nav navbar-top-links navbar-right pull-right">
+                    <li>
+                        <a class="profile-pic" href="#"> <img src="{% static 'man.png' %}" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">{{ request.user }}</b></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'dashboard:logout' %}" class="btn btn-danger">Chiqish</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-header -->
+            <!-- /.navbar-top-links -->
+            <!-- /.navbar-static-side -->
+        </nav>
+        <!-- End Top Navigation -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav slimscrollsidebar">
+                <div class="sidebar-head">
+                    <h3><span class="fa-fw open-close"><i class="ti-close ti-menu"></i></span> <span class="hide-menu">Navigation</span></h3>
+                </div>
+                <ul class="nav" id="side-menu">
+                    <li style="padding: 70px 0 0;">
+                        <a href="/" class="waves-effect"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>Bosh sahifa</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'dashboard:category' %}" class="waves-effect"><i class="fa fa-cube fa-fw" aria-hidden="true"></i>Turkumlar</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'dashboard:product' %}" class="waves-effect"><i class="fa fa-shopping-cart fa-fw" aria-hidden="true"></i>Sovg'alar</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'client:client' %}" class="waves-effect"><i class="fa fa-users fa-fw" aria-hidden="true"></i>Mijozlar</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'dashboard:promo' %}" class="waves-effect"><i class="fa fa-plus fa-fw" aria-hidden="true"></i>Promoko'dlar</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="burger" onclick="document.querySelector('.sidebar').classList.toggle('showme')" style="position:fixed;top:62px;right:0;font-size:30px;width:auto;height:auto;padding:10px;cursor:pointer;background:white;z-index:1111;">
+            <span style="cursor:pointer;" class="fa fa-bars"></span>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page Content -->
+        <!-- ============================================================== -->
+        <div id="page-wrapper">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="display:flex;align-items:center;justify-content:space-between;">
+                <h3 class="text-white">{{ message }}</h3>
+                <button onclick="this.parentElement.style.display = 'none'" class="btn fa fa-times" style="font-size:25px;color:black!important"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% block content %}
+            {% endblock %}
+            <footer class="footer text-center"> 2023 &copy; Nurullo Salaydinov | Binokor </footer>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page Content -->
+        <!-- ============================================================== -->
+    </div>
+
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    <script src="{% static 'plugins/bower_components/jquery/dist/jquery.min.js' %}"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="{% static 'plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js' %}"></script>
+    <!--slimscroll JavaScript -->
+    <script src="{% static 'js/jquery.slimscroll.js' %}"></script>
+    <!--Wave Effects -->
+    <script src="{% static 'js/waves.js' %}"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="{% static 'js/custom.min.js' %}"></script>
+</body>
+
+</html>

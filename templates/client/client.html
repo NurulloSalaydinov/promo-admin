@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Mijozlar | Binokor</title>
+<style>
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Mijozlar</h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            <ol class="breadcrumb">
+                <li><a href="/">Bosh sahifa</a></li>
+                <li class="active">Mijozlar</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="white-box">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;">
+                <h1>Mijozlar</h1>
+                <form class="form-group" style="display:flex;gap:15px">
+                    <input type="text" onchange="this.parentElement.submit()" name="q" placeholder="Qidiruv" class="form-control" style="font-size: 20px">
+                    <button class="btn btn-lg btn-primary fa fa-search"></button>
+                </form>
+            </div>
+            <div style="overflow: auto;width:100%">
+                {% if clients %}
+                <table class="table h4" style="min-width: 950px">
+                    <thead>
+                        <tr>
+                            <th>#Telegram ID</th>
+                            <th>Ism Familya</th>
+                            <th>Username</th>
+                            <th>To'plangan bal</th>
+                            <th>Telefon raqam</th>
+                            <th>Qo'shilgan vaqt</th>
+                            <th>Harakatlar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in clients %}
+                        <tr>
+                            <td>{{ client.telegram_id }}</td>
+                            <td>{{ client.first_name }} {{ client.last_name }}</td>
+                            <td>{{ client.username }}</td>
+                            <td>{{ client.points }}</td>
+                            <td>{{ client.phone }}</td>
+                            <td>{{ client.joined_at }}</td>
+                            <td>
+                                <a href="{% url 'client:client_detail' client.telegram_id %}"
+                                    class="btn btn-primary fa fa-arrow-right"></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="alert alert-warning">
+                    <h3 class="text-white">Hali mijozlar mavjud emas</h3>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

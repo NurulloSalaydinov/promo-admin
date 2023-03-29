@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Promoko'dlar | Binokor</title>
+<style>
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Promokodlar</h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            <ol class="breadcrumb">
+                <li><a href="/">Bosh sahifa</a></li>
+                <li class="active">Promokodlar</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="white-box">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;">
+                <h1>Promokodlar</h1>
+                <form action="{% url 'dashboard:promo_delete_date' %}" class="form-group" style="display:flex;gap:20px;flex-wrap:wrap;align-items:center;">
+                    <label for="start">
+                        <h4>Boshlanish sanasi</h5>
+                        <input type="date" id="start" name="start" placeholder="Sana" class="form-control">
+                    </label>
+                    <label for="end">
+                        <h4>Tugash sanasi</h4>
+                        <input type="date" id="end" name="end" placeholder="Sana" class="form-control">
+                    </label>
+                    <button class="btn btn-lg btn-primary fa fa-search"></button>
+                    <a href="{% url 'dashboard:promo_form' %}" class="btn btn-lg btn-danger fa fa-plus"></a>
+                </form>
+            </div>
+            <div style="overflow: auto;width:100%">
+                {% if promos %}
+                <table class="table h4" style="min-width: 950px">
+                    <thead>
+                        <tr>                        
+                            <th>#ID</th>
+                            <th>Kategoriya</th>
+                            <th>Bal</th>
+                            <th>Code</th>
+                            <th>Sana</th>
+                            <th>Ishlatildimi ?</th>
+                            <th>
+                                <center>
+                                    Harakatlar
+                                </center>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for promo in promos %}
+                        <tr>
+                            <td>{{ promo.id }}</td>
+                            <td>{{ promo.category.title }}</td>
+                            <td>{{ promo.category.points }}</td>
+                            <td>{{ promo.promocode }}</td>
+                            <td>{{ promo.created_at|date:"Y,m,d"     }}</td>
+                            <td>
+                                {% if promo.has_used %}
+                                <span class="btn btn-success">Ishlatilgan</span>
+                                {% else %}
+                                <span class="btn btn-danger">Ishlatilmagan</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <center>
+                                    <a href="{% url 'dashboard:promo_delete_form' promo.id %}" class="btn btn-danger fa fa-times"></a>
+                                </center>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <center>
+                                    {% if promos.has_previous %}
+                                    <a href="?page={{ promos.previous_page_number }}" class="fa fa-arrow-left btn btn-primary"></a>
+                                    {% endif %}
+                                    <span class="btn btn-secondary">
+                                        Sahifa {{ promos.number }} of {{ promos.paginator.num_pages }}.
+                                    </span>
+                                    {% if promos.has_next %}
+                                    <a href="?page={{ promos.next_page_number }}" class="fa fa-arrow-right btn btn-primary"></a>
+                                    {% endif %}
+                                </center>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                {% else %}
+                <div class="alert alert-warning">
+                    <h3 class="text-white">Hali promokodlar mavjud emas</h3>
+                </div>
+                {% endif %}
+            </div>
+            <center>
+                <a href="{% url 'dashboard:promo_form' %}" class="btn btn-lg btn-success">Promoko'd qo'shish</a>
+            </center>
+        </div>
+    </div>
+</div>
+{% endblock %}

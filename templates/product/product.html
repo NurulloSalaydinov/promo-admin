@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Sovg'alar | Binokor</title>
+<style>
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Sovg'alar</h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            <ol class="breadcrumb">
+                <li><a href="/">Bosh sahifa</a></li>
+                <li class="active">Sovg'alar</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="white-box">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;">
+                <h1>Sovg'alar</h1>
+            </div>
+            <div style="overflow: auto;width:100%">
+                {% if products %}
+                <table class="table h4" style="min-width: 950px">
+                    <thead>
+                        <tr>                        
+                            <th>#ID</th>
+                            <th>Sovg'a</th>
+                            <th>Bal</th>
+                            <th>
+                                <center>
+                                    Harakatlar
+                                </center>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <td>{{ product.id }}</td>
+                            <td>{{ product.title }}</td>
+                            <td>{{ product.req_points }}</td>
+                            <td>
+                                <center>
+                                    <a href="{% url 'dashboard:product_update_form' product.id %}" class="btn btn-warning fa fa-pencil"></a>
+                                    <a href="{% url 'dashboard:product_delete_form' product.id %}" class="btn btn-danger fa fa-times"></a>
+                                </center>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="alert alert-warning">
+                    <h3 class="text-white">Hali sovg'alar mavjud emas</h3>
+                </div>
+                {% endif %}
+            </div>
+            <center>
+                <a href="{% url 'dashboard:product_form' %}" class="btn btn-lg btn-success">Sovg'a qo'shish</a>
+            </center>
+        </div>
+    </div>
+</div>
+{% endblock %}

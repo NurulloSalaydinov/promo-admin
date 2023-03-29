@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Mijozlar | Binokor</title>
+<style>
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+    .mb-3 {
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Mijoz</h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            <ol class="breadcrumb">
+                <li><a href="/">Bosh sahifa</a></li>
+                <li><a href="{% url 'client:client' %}">Mijozlar</a></li>
+                <li class="active">{{ client.first_name }}</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="white-box">
+            <ul style="list-style-type: none;margin-top:10px;" class="h3">
+                <li class="mb-3">
+                    <strong><span class="fa fa-user"></span> Ism Familya:</strong> <span class="text-primary">{{ client.first_name }} {{ client.last_name }}</span>
+                </li>
+                <li class="mb-3">
+                    <strong><span class="fa fa-user-md"></span> Username:</strong> <span class="text-primary">{{ client.username }}</span>
+                </li>
+                <li class="mb-3">
+                    <strong><span class="fa fa-hashtag"></span> Telegram ID:</strong> <span class="text-primary">{{ client.telegram_id }}</span>
+                </li>
+                <li class="mb-3">
+                    <strong><span class="fa fa-star"></span> Bal:</strong> <span class="text-primary">{{ client.points }}</span>
+                </li>
+                <li class="mb-3">
+                    <strong><span class="fa fa-phone"></span> Telefon raqam:</strong> <a href="tel:{{ client.phone }}" class="text-primary">{{ client.phone }}</a>
+                </li>
+                <li class="mb-3">
+                    <strong><span class="fa fa-clock-o"></span> Qo'shilgan vaqti:</strong> <span class="text-primary">{{ client.joined_at }}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="white-box">
+            <div style="overflow: auto;width:100%">
+                {% if orders %}
+                    <table class="table h4" style="min-width: 950px;">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th scope="col">Ism</th>
+                                <th scope="col">Mahsulot</th>
+                                <th scope="col">Bal</th>
+                                <th scope="col">Buyurtma vaqti</th>
+                                <th scope="col">Telefon raqam</th>
+                                <th scope="col"><center>Yetkazildimi ?</center></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                            <tr>
+                                <td>{{ order.id }}</td>
+                                <td>{{ order.client.first_name }} {{ order.client.last_name }} @{{ order.client.username }}</td>
+                                <td>{{ order.product }}</td>
+                                <td>
+                                    <span class="fa fa-star-o"></span>
+                                    {{ order.product.req_points }}
+                                </td>
+                                <td>{{ order.created_at }}</td>
+                                <td><a href="tel:{{ order.client.phone }}">{{ order.client.phone }}</a></td>
+                                <td style="position:relative">
+                                    {% if order.is_checked %}
+                                    <center>
+                                        {% if order.delivered %}
+                                        <button class="btn btn btn-success fa fa-check"></button>
+                                        {% else %}
+                                        <button class="btn btn btn-danger fa fa-times"></button>
+                                        {% endif %}
+                                        <span onclick="this.parentElement.parentElement.children[1].style.display = 'block'" class="btn btn-warning fa fa-pencil"></span>
+                                    </center>
+                                    <div style="position:absolute;background-color:white;z-index:20;top:0;left:0;right:0;bottom:0;padding-top:15px;display:none">
+                                        <center>
+                                            <a href="{% url 'client:order_times' order.id %}" class="btn btn-danger fa fa-times"></a>
+                                            <a href="{% url 'client:order_check' order.id %}" class="btn btn-success fa fa-check"></a>
+                                        </center>
+                                    </div>
+                                    {% else %}
+                                    <center>
+                                        <div style="display:flex;align-items:center;gap:15px;justify-content:center;">
+                                            <a href="{% url 'client:order_times' order.id %}" class="btn btn-danger fa fa-times"></a>
+                                            <a href="{% url 'client:order_check' order.id %}" class="btn btn-success fa fa-check"></a>
+                                        </div>
+                                    </center>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="alert alert-warning">
+                        <h3 class="text-white">Buyurtma topilmadi</h3>
+                    </div>
+                    {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

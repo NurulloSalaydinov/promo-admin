@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Bosh sahifa | Binokor</title>
+<style>
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Bosh sahifa</h4> </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            <ol class="breadcrumb">
+                <li class="active">Bosh sahifa</li>
+            </ol>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-sm-6 col-xs-12">
+            <div class="white-box analytics-info">
+                <a href="{% url 'dashboard:category' %}">
+                    <h3 class="box-title">Kategoriyalar</h3>
+                    <ul class="list-inline two-part">
+                        <li>
+                            <div id="sparklinedash"><canvas width="67" height="30" style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas></div>
+                        </li>
+                        <li class="text-right"><i class="ti-arrow-up text-success"></i> <span class="counter text-success">{{ category_count }}</span></li>
+                    </ul>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-6 col-xs-12">
+            <div class="white-box analytics-info">
+                <a href="{% url 'dashboard:product' %}">
+                    <h3 class="box-title">Sovg'alar</h3>
+                    <ul class="list-inline two-part">
+                        <li>
+                            <div id="sparklinedash2"><canvas width="67" height="30" style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas></div>
+                        </li>
+                        <li class="text-right"><i class="ti-arrow-up text-purple"></i> <span class="counter text-purple">{{ product_count }}</span></li>
+                    </ul>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-6 col-xs-12">
+            <div class="white-box analytics-info">
+                <a href="{% url 'client:client' %}">
+                    <h3 class="box-title">Klientlar</h3>
+                    <ul class="list-inline two-part">
+                        <li>
+                            <div id="sparklinedash3"><canvas width="67" height="30" style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas></div>
+                        </li>
+                        <li class="text-right"><i class="ti-arrow-up text-info"></i> <span class="counter text-info">{{ client_count }}</span></li>
+                    </ul>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;">
+                    <h4 class="box-title">Buyurtmalar <p class="h3 text-primary">1 - 20</p></h4>
+                    <form class="form-group">
+                        <input type="text" onchange="this.parentElement.submit()" name="q" placeholder="Qidiruv" class="form-control">
+                    </form>
+                    <form class="form-group">
+                        <select onchange="this.parentElement.submit()" class="form-control" name="sort">
+                            <option value="">-------</option>
+                            <option value="all">Hammasi</option>
+                            <option value="delivered">Yetkazilgan</option>
+                            <option value="pending">Yetkazilmagan</option>
+                        </select>
+                    </form>
+                    <!-- <a href="#" class="btn btn-success">Barcha buyurtmalar <span class="fa fa-arrow-right"></span></a> -->
+                </div>
+                <div style="overflow: auto;width:100%">
+                    {% if orders %}
+                    <table class="table h4" style="min-width: 950px;">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th scope="col">Ism</th>
+                                <th scope="col">Mahsulot</th>
+                                <th scope="col">Bal</th>
+                                <th scope="col">Buyurtma vaqti</th>
+                                <th scope="col">Telefon raqam</th>
+                                <th scope="col"><center>Yetkazildimi ?</center></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                            <tr>
+                                <td>{{ order.id }}</td>
+                                <td>{{ order.client.first_name }} {{ order.client.last_name }} @{{ order.client.username }}</td>
+                                <td>{{ order.product }}</td>
+                                <td>
+                                    <span class="fa fa-star-o"></span>
+                                    {{ order.product.req_points }}
+                                </td>
+                                <td>{{ order.created_at }}</td>
+                                <td><a href="tel:{{ order.client.phone }}">{{ order.client.phone }}</a></td>
+                                <td style="position:relative">
+                                    {% if order.is_checked %}
+                                    <center>
+                                        {% if order.delivered %}
+                                        <button class="btn btn btn-success fa fa-check"></button>
+                                        {% else %}
+                                        <button class="btn btn btn-danger fa fa-times"></button>
+                                        {% endif %}
+                                        <span onclick="this.parentElement.parentElement.children[1].style.display = 'block'" class="btn btn-warning fa fa-pencil"></span>
+                                    </center>
+                                    <div style="position:absolute;background-color:white;z-index:20;top:0;left:0;right:0;bottom:0;padding-top:15px;display:none">
+                                        <center>
+                                            <a href="{% url 'client:order_times' order.id %}" class="btn btn-danger fa fa-times"></a>
+                                            <a href="{% url 'client:order_check' order.id %}" class="btn btn-success fa fa-check"></a>
+                                        </center>
+                                    </div>
+                                    {% else %}
+                                    <center>
+                                        <div style="display:flex;align-items:center;gap:15px;justify-content:center;">
+                                            <a href="{% url 'client:order_times' order.id %}" class="btn btn-danger fa fa-times"></a>
+                                            <a href="{% url 'client:order_check' order.id %}" class="btn btn-success fa fa-check"></a>
+                                        </div>
+                                    </center>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="alert alert-warning">
+                        <h3 class="text-white">Buyurtma topilmadi</h3>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

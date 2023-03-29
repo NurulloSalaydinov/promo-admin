@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Turkumlar | Binokor</title>
+<style>
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Kategoriyalar</h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            <ol class="breadcrumb">
+                <li><a href="/">Bosh sahifa</a></li>
+                <li class="active">Kategoriyalar</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="white-box">
+            <h1>Kategoriyalar</h1>
+            <div style="overflow: auto;width:100%">           
+                {% if categories %}
+                <table class="table h4" style="min-width: 950px">
+                    <thead>
+                        <tr>                        
+                            <th>#ID</th>
+                            <th>Kategoriya nomi</th>
+                            <th>Kategoriya bali</th>
+                            <th>Harakatlar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td>{{ category.id }}</td>
+                            <td>{{ category.title }}</td>
+                            <td>{{ category.points }}</td>
+                            <td>
+                                <a href="{% url 'dashboard:category_update_form' category.id %}" class="btn btn-warning fa fa-pencil"></a>
+                                <a href="{% url 'dashboard:category_delete_form' category.id %}" class="btn btn btn-danger fa fa-times"></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="alert alert-warning">
+                    <h3 class="text-white">Hali kategoriyalar mavjud emas</h3>
+                </div>
+                {% endif %}
+            </div>
+            <center>
+                <a href="{% url 'dashboard:category_form' %}" class="btn btn-lg btn-success">Kategoriya qo'shish</a>
+            </center>
+        </div>
+    </div>
+</div>
+{% endblock %}
