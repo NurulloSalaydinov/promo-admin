@@ -1,0 +1,4 @@
+
+BOT_TOKEN = "6049483804:AAFPdJIPx9bidpcrKDzN2fCHJdxnk60VZsc"
+WEBSITE_TOKEN = ""
+BASE_URL = "http://127.0.0.1:8000/api/v1"
